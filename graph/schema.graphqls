@@ -2,21 +2,52 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Post {
+type User {
   id: ID!
-  title: String!
-  votes: Int!
-  url: String!
+  name: String!
+  password: String!
+  email: String!
   createdAt: String!
+  updatedAt: String
 }
 
-type PostsMeta {
-  count: Int!
+type Post {
+  id: ID!
+  postedAt: String
+  createdAt: String!
+  updatedAt: String
+  articles: [Article]
+}
+
+type Article {
+  id: ID!
+  title: String
+  detail: String
+  createdAt: String!
+  updatedAt: String
+  textItems: [TextItem]
+  movieItems: [MovieItem]
+}
+
+type TextItem {
+  id: ID!
+  order: Int
+  value: String!
+  createdAt: String!
+  updatedAt: String
+}
+
+type MovieItem {
+  id: ID!
+  order: Int
+  value: String!
+  createdAt: String!
+  updatedAt: String
 }
 
 type Query {
-  allPosts(orderBy: OrderBy, first: Int!, skip: Int!): [Post!]!
-  _allPostsMeta: PostsMeta!
+  posts: [Post!]!
+  users: [User!]!
 }
 
 enum OrderBy {
@@ -24,7 +55,43 @@ enum OrderBy {
   createdAt_DESC
 }
 
+input UserData {
+  name: String!
+  password: String!
+  email: String!
+}
+
+input PostData {
+  postedAt: String
+}
+
+input ArticleData {
+  title: String!
+  detail: String!
+  postId: String!
+}
+
+input TextItemData {
+  order: String!
+  value: String!
+  articleId: String!
+}
+
+input MovieItemData {
+  order: String!
+  value: String!
+  articleId: String!
+}
+
 type Mutation {
-  createPost(title: String!, url: String!): Post!
-  updatePost(id: ID!, votes: Int): Post!
+  createUser(input: UserData!): User!
+  updateUser(input: UserData!): User!
+  createPost(input: PostData!): Post!
+  updatePost(input: PostData!): Post!
+  createArticle(input: ArticleData!): Article!
+  updateArticle(input: ArticleData!): Article!
+  createTextItem(input: TextItemData!): TextItem!
+  updateTextItem(input: TextItemData!): TextItem!
+  createMovieItem(input: MovieItemData!): MovieItem!
+  updateMovieItem(input: MovieItemData!): MovieItem!
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"firstclimb-go/external"
 	"firstclimb-go/graph"
 	"firstclimb-go/graph/generated"
 	"log"
@@ -19,7 +20,14 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	db, err := external.ConnectDatabase()
+	if err != nil {
+		panic(err)
+	}
+
+	srv := handler.NewDefaultServer(
+		generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}),
+	)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

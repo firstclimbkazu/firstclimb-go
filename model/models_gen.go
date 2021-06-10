@@ -8,16 +8,32 @@ import (
 	"strconv"
 )
 
-type Post struct {
-	ID        string `json:"id"`
-	Title     string `json:"title"`
-	Votes     int    `json:"votes"`
-	URL       string `json:"url"`
-	CreatedAt string `json:"createdAt"`
+type ArticleData struct {
+	Title  string `json:"title"`
+	Detail string `json:"detail"`
+	PostID string `json:"postId"`
 }
 
-type PostsMeta struct {
-	Count int `json:"count"`
+type MovieItemData struct {
+	Order     string `json:"order"`
+	Value     string `json:"value"`
+	ArticleID string `json:"articleId"`
+}
+
+type PostData struct {
+	PostedAt *string `json:"postedAt"`
+}
+
+type TextItemData struct {
+	Order     string `json:"order"`
+	Value     string `json:"value"`
+	ArticleID string `json:"articleId"`
+}
+
+type UserData struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
 }
 
 type OrderBy string
