@@ -1,10 +1,10 @@
 package entity
 
+import "gorm.io/gorm"
+
 type User struct {
-	ID        uint
-	Name      string
-	Password  string
-	Email     string
-	CreatedAt string
-	UpdatedAt string
+	gorm.Model
+	Name     string `gorm:"type:varchar(100);"`
+	Password string `gorm:"type:varchar(100);"`
+	Email    string `gorm:"type:varchar(100);"`
 }

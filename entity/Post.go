@@ -1,8 +1,12 @@
 package entity
 
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
 type Post struct {
-	ID        uint
-	PostedAt  string
-	CreatedAt string
-	UpdatedAt string
+	gorm.Model
+	PostedAt *time.Time
 }

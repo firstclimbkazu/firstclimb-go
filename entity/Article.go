@@ -1,11 +1,11 @@
 package entity
 
+import "gorm.io/gorm"
+
 type Article struct {
-	ID          uint
-	Title       string
-	Detail      string
-	CreatedAt   string
-	UpdatedAt   string
-	Post        *Post
-	PostID      string
+	gorm.Model
+	Title  string `gorm:"type:varchar(255);"`
+	Detail string `gorm:"type:varchar(255);"`
+	Post   *Post
+	PostID uint
 }

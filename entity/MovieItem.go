@@ -1,11 +1,11 @@
 package entity
 
+import "gorm.io/gorm"
+
 type MovieItem struct {
-	ID        uint
+	gorm.Model
 	Order     uint
-	Value     string
-	CreatedAt string
-	UpdatedAt string
+	Value     string `gorm:"type:text;"`
 	ArticleID uint
 	Article   Article
 }

@@ -65,7 +65,7 @@ func (r *mutationResolver) CreateArticle(ctx context.Context, input model.Articl
 	}
 	record := entity.Article{
 		Title:  input.Title,
-		PostID: fmt.Sprintf("%d", postId),
+		PostID: uint(postId),
 	}
 	if err := r.DB.Create(&record).Error; err != nil {
 		return nil, err
