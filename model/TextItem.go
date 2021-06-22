@@ -19,7 +19,7 @@ func NewTextItemFromEntity(e *entity.TextItem) *TextItem {
 		ID:        fmt.Sprintf("%d", e.ID),
 		Order:     e.Order,
 		Value:     e.Value,
-		CreatedAt: e.CreatedAt,
+		CreatedAt: e.CreatedAt.String(),
 		ArticleID: fmt.Sprintf("%d", e.ArticleID),
 	}
 }

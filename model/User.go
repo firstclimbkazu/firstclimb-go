@@ -19,6 +19,6 @@ func NewUserFromEntity(e *entity.User) *User {
 		ID:        fmt.Sprintf("%d", e.ID),
 		Name:      e.Name,
 		Email:     e.Email,
-		CreatedAt: e.CreatedAt,
+		CreatedAt: e.CreatedAt.String(),
 	}
 }

@@ -19,7 +19,7 @@ func NewArticleFromEntity(e *entity.Article) *Article {
 		ID:        fmt.Sprintf("%d", e.ID),
 		Title:     e.Title,
 		Detail:    e.Detail,
-		CreatedAt: e.CreatedAt,
-		PostID:    e.PostID,
+		CreatedAt: e.CreatedAt.String(),
+		PostID:    fmt.Sprintf("%d", e.PostID),
 	}
 }

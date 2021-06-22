@@ -15,6 +15,6 @@ type Post struct {
 func NewPostFromEntity(e *entity.Post) *Post {
 	return &Post{
 		ID:        fmt.Sprintf("%d", e.ID),
-		CreatedAt: e.CreatedAt,
+		CreatedAt: e.CreatedAt.String(),
 	}
 }
