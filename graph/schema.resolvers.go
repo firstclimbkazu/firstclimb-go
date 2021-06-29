@@ -10,6 +10,7 @@ import (
 	"firstclimb-go/model"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 func (r *articleResolver) TextItems(ctx context.Context, obj *model.Article) ([]*model.TextItem, error) {
@@ -34,13 +35,20 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.UserData)
 		return nil, err
 	}
 
-	res := model.NewUserFromEntity(&record)
+	res := model.UserFromEntity(&record)
 
 	return res, nil
 }
 
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UserData) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	result := r.DB.Where("id = ?", input.UserID).Updates(&entity.User{Name: input.Name, Email: input.Email})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	record := entity.User{}
+	r.DB.First(&record, input.UserID)
+	res := model.UserFromEntity(&record)
+	return res, nil
 }
 
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.PostData) (*model.Post, error) {
@@ -49,13 +57,21 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.PostData)
 		return nil, err
 	}
 
-	res := model.NewPostFromEntity(&record)
+	res := model.PostFromEntity(&record)
 
 	return res, nil
 }
 
 func (r *mutationResolver) UpdatePost(ctx context.Context, input model.PostData) (*model.Post, error) {
-	panic(fmt.Errorf("not implemented"))
+	t, _ := time.Parse(DATE_LAYOUT, *input.PostedAt)
+	result := r.DB.Where("id = ?", input.PostID).Updates(&entity.Post{PostedAt: &t})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	record := entity.Post{}
+	r.DB.First(&record, input.PostID)
+	res := model.PostFromEntity(&record)
+	return res, nil
 }
 
 func (r *mutationResolver) CreateArticle(ctx context.Context, input model.ArticleData) (*model.Article, error) {
@@ -71,13 +87,28 @@ func (r *mutationResolver) CreateArticle(ctx context.Context, input model.Articl
 		return nil, err
 	}
 
-	res := model.NewArticleFromEntity(&record)
+	res := model.ArticleFromEntity(&record)
 
 	return res, nil
 }
 
 func (r *mutationResolver) UpdateArticle(ctx context.Context, input model.ArticleData) (*model.Article, error) {
-	panic(fmt.Errorf("not implemented"))
+	postId, err := strconv.Atoi(input.PostID)
+	if err != nil {
+		return nil, err
+	}
+	result := r.DB.Where("id = ?", input.ArticleID).Updates(&entity.Article{
+		Title:  input.Title,
+		Detail: input.Detail,
+		PostID: uint(postId),
+	})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	record := entity.Article{}
+	r.DB.First(&record, input.ArticleID)
+	res := model.ArticleFromEntity(&record)
+	return res, nil
 }
 
 func (r *mutationResolver) CreateTextItem(ctx context.Context, input model.TextItemData) (*model.TextItem, error) {
@@ -98,13 +129,32 @@ func (r *mutationResolver) CreateTextItem(ctx context.Context, input model.TextI
 		return nil, err
 	}
 
-	res := model.NewTextItemFromEntity(&record)
+	res := model.TextItemFromEntity(&record)
 
 	return res, nil
 }
 
 func (r *mutationResolver) UpdateTextItem(ctx context.Context, input model.TextItemData) (*model.TextItem, error) {
-	panic(fmt.Errorf("not implemented"))
+	articleId, err := strconv.Atoi(input.ArticleID)
+	if err != nil {
+		return nil, err
+	}
+	order, err := strconv.Atoi(input.Order)
+	if err != nil {
+		return nil, err
+	}
+	result := r.DB.Where("id = ?", input.TextItemID).Updates(&entity.TextItem{
+		Order:     uint(order),
+		Value:     input.Value,
+		ArticleID: uint(articleId),
+	})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	record := entity.TextItem{}
+	r.DB.First(&record, input.ArticleID)
+	res := model.TextItemFromEntity(&record)
+	return res, nil
 }
 
 func (r *mutationResolver) CreateMovieItem(ctx context.Context, input model.MovieItemData) (*model.MovieItem, error) {
@@ -125,13 +175,32 @@ func (r *mutationResolver) CreateMovieItem(ctx context.Context, input model.Movi
 		return nil, err
 	}
 
-	res := model.NewMovieItemFromEntity(&record)
+	res := model.MovieItemFromEntity(&record)
 
 	return res, nil
 }
 
 func (r *mutationResolver) UpdateMovieItem(ctx context.Context, input model.MovieItemData) (*model.MovieItem, error) {
-	panic(fmt.Errorf("not implemented"))
+	articleId, err := strconv.Atoi(input.ArticleID)
+	if err != nil {
+		return nil, err
+	}
+	order, err := strconv.Atoi(input.Order)
+	if err != nil {
+		return nil, err
+	}
+	result := r.DB.Where("id = ?", input.MovieItemID).Updates(&entity.MovieItem{
+		Order:     uint(order),
+		Value:     input.Value,
+		ArticleID: uint(articleId),
+	})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	record := entity.MovieItem{}
+	r.DB.First(&record, input.ArticleID)
+	res := model.MovieItemFromEntity(&record)
+	return res, nil
 }
 
 func (r *postResolver) Articles(ctx context.Context, obj *model.Post) ([]*model.Article, error) {
@@ -145,7 +214,7 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
 	}
 	posts := []*model.Post{}
 	for _, record := range records {
-		posts = append(posts, model.NewPostFromEntity(&record))
+		posts = append(posts, model.PostFromEntity(&record))
 	}
 
 	return posts, nil
@@ -190,6 +259,8 @@ type textItemResolver struct{ *Resolver }
 //  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
 //    it when you're done.
 //  - You have helper methods in this file. Move them out to keep these resolver files clean.
+const DATE_LAYOUT = "Mon Jan 2 15:04:05 MST 2006"
+
 func (r *articleResolver) Post(ctx context.Context, obj *model.Article) (*model.Post, error) {
 	panic(fmt.Errorf("not implemented"))
 }

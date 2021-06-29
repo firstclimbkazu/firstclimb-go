@@ -14,7 +14,7 @@ type MovieItem struct {
 	ArticleID string `json:"article"`
 }
 
-func NewMovieItemFromEntity(e *entity.MovieItem) *MovieItem {
+func MovieItemFromEntity(e *entity.MovieItem) *MovieItem {
 	return &MovieItem{
 		ID:        fmt.Sprintf("%d", e.ID),
 		Order:     e.Order,

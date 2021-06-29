@@ -56,28 +56,33 @@ enum OrderBy {
 }
 
 input UserData {
+  userId: ID
   name: String!
   password: String!
   email: String!
 }
 
 input PostData {
+  postId: ID
   postedAt: String
 }
 
 input ArticleData {
+  articleId: ID
   title: String!
   detail: String!
   postId: String!
 }
 
 input TextItemData {
+  textItemId: ID
   order: String!
   value: String!
   articleId: String!
 }
 
 input MovieItemData {
+  movieItemId: ID
   order: String!
   value: String!
   articleId: String!

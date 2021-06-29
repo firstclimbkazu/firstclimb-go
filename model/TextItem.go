@@ -14,7 +14,7 @@ type TextItem struct {
 	ArticleID string `json:"article"`
 }
 
-func NewTextItemFromEntity(e *entity.TextItem) *TextItem {
+func TextItemFromEntity(e *entity.TextItem) *TextItem {
 	return &TextItem{
 		ID:        fmt.Sprintf("%d", e.ID),
 		Order:     e.Order,

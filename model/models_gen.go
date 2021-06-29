@@ -9,31 +9,36 @@ import (
 )
 
 type ArticleData struct {
-	Title  string `json:"title"`
-	Detail string `json:"detail"`
-	PostID string `json:"postId"`
+	ArticleID *string `json:"articleId"`
+	Title     string  `json:"title"`
+	Detail    string  `json:"detail"`
+	PostID    string  `json:"postId"`
 }
 
 type MovieItemData struct {
-	Order     string `json:"order"`
-	Value     string `json:"value"`
-	ArticleID string `json:"articleId"`
+	MovieItemID *string `json:"movieItemId"`
+	Order       string  `json:"order"`
+	Value       string  `json:"value"`
+	ArticleID   string  `json:"articleId"`
 }
 
 type PostData struct {
+	PostID   *string `json:"postId"`
 	PostedAt *string `json:"postedAt"`
 }
 
 type TextItemData struct {
-	Order     string `json:"order"`
-	Value     string `json:"value"`
-	ArticleID string `json:"articleId"`
+	TextItemID *string `json:"textItemId"`
+	Order      string  `json:"order"`
+	Value      string  `json:"value"`
+	ArticleID  string  `json:"articleId"`
 }
 
 type UserData struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
+	UserID   *string `json:"userId"`
+	Name     string  `json:"name"`
+	Password string  `json:"password"`
+	Email    string  `json:"email"`
 }
 
 type OrderBy string

@@ -12,7 +12,7 @@ type Post struct {
 	UpdatedAt string `json:"updatedAt"`
 }
 
-func NewPostFromEntity(e *entity.Post) *Post {
+func PostFromEntity(e *entity.Post) *Post {
 	return &Post{
 		ID:        fmt.Sprintf("%d", e.ID),
 		CreatedAt: e.CreatedAt.String(),
