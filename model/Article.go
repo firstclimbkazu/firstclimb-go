@@ -14,7 +14,7 @@ type Article struct {
 	PostID    string `json:"post"`
 }
 
-func NewArticleFromEntity(e *entity.Article) *Article {
+func ArticleFromEntity(e *entity.Article) *Article {
 	return &Article{
 		ID:        fmt.Sprintf("%d", e.ID),
 		Title:     e.Title,

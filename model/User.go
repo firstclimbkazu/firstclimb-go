@@ -14,7 +14,7 @@ type User struct {
 	UpdatedAt string `json:"updatedAt"`
 }
 
-func NewUserFromEntity(e *entity.User) *User {
+func UserFromEntity(e *entity.User) *User {
 	return &User{
 		ID:        fmt.Sprintf("%d", e.ID),
 		Name:      e.Name,

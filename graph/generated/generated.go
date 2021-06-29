@@ -606,28 +606,33 @@ enum OrderBy {
 }
 
 input UserData {
+  userId: ID
   name: String!
   password: String!
   email: String!
 }
 
 input PostData {
+  postId: ID
   postedAt: String
 }
 
 input ArticleData {
+  articleId: ID
   title: String!
   detail: String!
   postId: String!
 }
 
 input TextItemData {
+  textItemId: ID
   order: String!
   value: String!
   articleId: String!
 }
 
 input MovieItemData {
+  movieItemId: ID
   order: String!
   value: String!
   articleId: String!
@@ -3451,6 +3456,14 @@ func (ec *executionContext) unmarshalInputArticleData(ctx context.Context, obj i
 
 	for k, v := range asMap {
 		switch k {
+		case "articleId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("articleId"))
+			it.ArticleID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "title":
 			var err error
 
@@ -3487,6 +3500,14 @@ func (ec *executionContext) unmarshalInputMovieItemData(ctx context.Context, obj
 
 	for k, v := range asMap {
 		switch k {
+		case "movieItemId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("movieItemId"))
+			it.MovieItemID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "order":
 			var err error
 
@@ -3523,6 +3544,14 @@ func (ec *executionContext) unmarshalInputPostData(ctx context.Context, obj inte
 
 	for k, v := range asMap {
 		switch k {
+		case "postId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("postId"))
+			it.PostID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "postedAt":
 			var err error
 
@@ -3543,6 +3572,14 @@ func (ec *executionContext) unmarshalInputTextItemData(ctx context.Context, obj 
 
 	for k, v := range asMap {
 		switch k {
+		case "textItemId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("textItemId"))
+			it.TextItemID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "order":
 			var err error
 
@@ -3579,6 +3616,14 @@ func (ec *executionContext) unmarshalInputUserData(ctx context.Context, obj inte
 
 	for k, v := range asMap {
 		switch k {
+		case "userId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			it.UserID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "name":
 			var err error
 
@@ -4764,6 +4809,21 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	return graphql.MarshalBoolean(*v)
+}
+
+func (ec *executionContext) unmarshalOID2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalID(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOID2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalID(*v)
 }
 
 func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
